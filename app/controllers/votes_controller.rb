@@ -24,11 +24,18 @@ class VotesController < ApplicationController
   # POST /votes
   # POST /votes.json
   def create
-    @vote = Vote.new(vote_params)
+    @vote = Vote.new
+    @vote.user_id = current_user.id
+    test = params[:vote][:votable]
+    puts test
+    byebug
+
+    @vote.votable_type = params[:vote][:votable].class
+    @vote.votable_id = params[:vote][:votable]
 
     respond_to do |format|
       if @vote.save
-        format.html { redirect_to @vote, notice: 'Vote was successfully created.' }
+        format.html { redirect_to :back, notice: 'Vote was successfully created.' }
         format.json { render :show, status: :created, location: @vote }
       else
         format.html { render :new }
@@ -69,6 +76,6 @@ class VotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def vote_params
-      params.require(:vote).permit(:user_id)
+      params.require(:vote).permit(:user_id, :votable)
     end
 end
