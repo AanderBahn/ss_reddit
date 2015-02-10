@@ -26,12 +26,8 @@ class VotesController < ApplicationController
   def create
     @vote = Vote.new
     @vote.user_id = current_user.id
-    test = params[:vote][:votable]
-    puts test
-    byebug
-
-    @vote.votable_type = params[:vote][:votable].class
-    @vote.votable_id = params[:vote][:votable]
+    @vote.votable_type = params[:vote][:votable_type]
+    @vote.votable_id = params[:vote][:votable_id]
 
     respond_to do |format|
       if @vote.save
